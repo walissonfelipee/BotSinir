@@ -19,6 +19,16 @@ from selenium.webdriver import ActionChains, Keys
 import time
 import pyautogui
 import os
+from dotenv import load_dotenv
+
+# Carregar variáveis do .env
+load_dotenv()
+SITE = os.getenv("SITE")
+CNPJ = os.getenv("CNPJ")
+CPF = os.getenv("CPF")
+SENHA = os.getenv("SENHA")
+EMAIL = os.getenv("EMAIL")
+SENHADEAPPEMAIL = os.getenv("SENHADEAPPEMAIL")
 
 
 # INICIALIZAÇÃO DO WEBDRIVER PARA ABRIR O CHROME.
@@ -26,14 +36,15 @@ servico = Service(ChromeDriverManager().install())
 navegador = webdriver.Chrome(service=servico)
 
 # ABRE A PÁGINA DO SINIR.
-navegador.get("https://mtr.sinir.gov.br/")
+navegador.get(SITE)
 sleep(5)
 pyautogui.hotkey('enter')
+print("ola")
 
 # INSERE AS INFORMÇÕES COMO LOGIN E SENHA DO USUÁRIO.
-navegador.find_element(By.XPATH, '//*[@id="mat-input-0"]').send_keys("40263170000930")
-navegador.find_element(By.XPATH, '//*[@id="mat-input-1"]').send_keys("09950039983")
-navegador.find_element(By.XPATH, '//*[@id="mat-input-2"]').send_keys("Monica2025@")
+navegador.find_element(By.XPATH, '//*[@id="mat-input-0"]').send_keys(CNPJ)
+navegador.find_element(By.XPATH, '//*[@id="mat-input-1"]').send_keys(CPF)
+navegador.find_element(By.XPATH, '//*[@id="mat-input-2"]').send_keys(SENHA)
 
 sleep(5)
 navegador.find_element(By.XPATH, '//button[@class="mat-raised-button mat-primary"]').click()
@@ -88,8 +99,8 @@ root.attributes("-topmost", True)
 # FUNÇÃO QUE ENVIA E-MAIL AO TERMINAR AS BAIXAS  ATRAVÉS DO GMAIL
 def enviar_email():
     host = 'imap.gmail.com'
-    email = 'wally.felipee@gmail.com'
-    password = 'rfue iwsj fbkb utow'
+    email = EMAIL
+    password = SENHADEAPPEMAIL
 
     with Imbox(host, username=email, password=password) as imbox:
         print('Conexão estabelecida com sucesso!')
@@ -98,7 +109,7 @@ def enviar_email():
     msg = EmailMessage()
     msg['Subject'] = 'E-mail automático do Wall-e'
     msg['From'] = email
-    msg['To'] = ['walisson.rodriguez@outlook.com', 'monica.rodriguesferreira@outlook.com']
+    msg['To'] = ['DESTINATARIO', 'DESTINATARIO2']
     msg.set_content("""
                             <p> Olá<br><br>
                                 Esse é um E-mail automático do Robô Wall-e.<br><br>
